@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -104,6 +104,7 @@
             font-size: 14px;
             font-weight: bold;
             margin-top: 8px;
+            margin-right: 8px;
             transition: all 0.3s ease;
             box-shadow: 0 4px 6px rgba(0,0,0,0.2);
         }
@@ -116,57 +117,6 @@
 
         .copy-btn:active {
             transform: scale(0.98);
-        }
-
-        .note {
-            background: rgba(255, 235, 59, 0.15);
-            padding: 20px;
-            border-left: 5px solid #ffeb3b;
-            border-radius: 8px;
-            margin: 15px 0;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-        }
-
-        .note p {
-            margin-bottom: 10px;
-        }
-
-        .note ul {
-            list-style-position: inside;
-            line-height: 1.8;
-        }
-
-        .note ul li {
-            margin: 8px 0;
-        }
-
-        .note code {
-            background: rgba(0,0,0,0.3);
-            padding: 3px 8px;
-            border-radius: 4px;
-            font-family: 'Courier New', monospace;
-            color: #ffeb3b;
-        }
-
-        .iframe-container {
-            position: relative;
-            padding-bottom: 56.25%;
-            height: 0;
-            overflow: hidden;
-            border-radius: 12px;
-            box-shadow: 0 8px 24px rgba(0,0,0,0.4);
-            margin: 20px 0;
-            border: 3px solid rgba(255,255,255,0.2);
-        }
-
-        .iframe-container iframe {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            border: none;
-            border-radius: 12px;
         }
 
         .emoji {
@@ -191,34 +141,11 @@
             }
         }
     </style>
-    <script>
-        function copyToClipboard(command) {
-            const textarea = document.createElement('textarea');
-            textarea.value = command;
-            textarea.style.position = 'fixed';
-            textarea.style.opacity = '0';
-            document.body.appendChild(textarea);
-            textarea.select();
-            
-            try {
-                const successful = document.execCommand('copy');
-                if (successful) {
-                    alert("✅ Lệnh đã được sao chép!");
-                } else {
-                    alert("❌ Không thể sao chép. Vui lòng sao chép thủ công.");
-                }
-            } catch (err) {
-                alert("❌ Lỗi: " + err.message);
-            }
-            
-            document.body.removeChild(textarea);
-        }
-    </script>
 </head>
 <body>
     <div class="container">
         <h1>
-            <span class="emoji">🛠️</span>Tool Rejoin Fynix<span class="emoji">🛠️</span>
+            <span class="emoji">🛠️</span> Tool Rejoin Fynix <span class="emoji">🛠️</span>
         </h1>
 
         <div class="section">
@@ -228,16 +155,60 @@
                 <li>
                     <strong>Bước 1: Thay đổi repository Termux</strong>
                     <pre>https://www.mediafire.com/file/p3os6vt5a2nx4w3/obf-bduyrj.py/file</pre>
-                    <button class="copy-btn" onclick="copyToClipboard('https://www.mediafire.com/file/p3os6vt5a2nx4w3/obf-bduyrj.py/file')">📋 Copy Command</button>
-                    <button class="copy-btn" onclick="window.open('https://www.mediafire.com/file/p3os6vt5a2nx4w3/obf-bduyrj.py/file', '_blank')">🔗 Open Link</button>
+                    <button 
+                        class="copy-btn"
+                        data-copy="https://www.mediafire.com/file/p3os6vt5a2nx4w3/obf-bduyrj.py/file">
+                        📋 Copy Command
+                    </button>
+                    <button 
+                        class="copy-btn"
+                        onclick="window.open('https://www.mediafire.com/file/p3os6vt5a2nx4w3/obf-bduyrj.py/file', '_blank')">
+                        🔗 Open Link
+                    </button>
                 </li>
                 <li>
                     <strong>Bước 2: Chạy tool</strong>
-                    <pre>su -c "export PATH=\$PATH:/data/data/com.termux/files/usr/bin && export TERM=xterm-256color && cd /sdcard/Download && python obf-bduyrj.py"</pre>
-                    <button class="copy-btn" onclick="copyToClipboard('su -c "export PATH=\$PATH:/data/data/com.termux/files/usr/bin && export TERM=xterm-256color && cd /sdcard/Download && python obf-bduyrj.py"')">📋 Copy Command</button>
+                    <pre>su -c "export PATH=$PATH:/data/data/com.termux/files/usr/bin && export TERM=xterm-256color && cd /sdcard/Download && python obf-bduyrj.py"</pre>
+                    <button
+                        class="copy-btn"
+                        data-copy='su -c "export PATH=$PATH:/data/data/com.termux/files/usr/bin && export TERM=xterm-256color && cd /sdcard/Download && python obf-bduyrj.py"'>
+                        📋 Copy Command
+                    </button>
                 </li>
             </ol>
         </div>
     </div>
+
+    <script>
+        async function copyToClipboard(text) {
+            try {
+                await navigator.clipboard.writeText(text);
+                alert("✅ Lệnh đã được sao chép!");
+            } catch (err) {
+                const textarea = document.createElement("textarea");
+                textarea.value = text;
+                textarea.style.position = "fixed";
+                textarea.style.opacity = "0";
+                document.body.appendChild(textarea);
+                textarea.select();
+
+                try {
+                    document.execCommand("copy");
+                    alert("✅ Lệnh đã được sao chép!");
+                } catch (e) {
+                    alert("❌ Không thể sao chép. Vui lòng sao chép thủ công.");
+                }
+
+                document.body.removeChild(textarea);
+            }
+        }
+
+        document.querySelectorAll("[data-copy]").forEach(button => {
+            button.addEventListener("click", () => {
+                const text = button.getAttribute("data-copy");
+                copyToClipboard(text);
+            });
+        });
+    </script>
 </body>
 </html>
